@@ -2,6 +2,8 @@ package net.pinger.skinsetter;
 
 import net.pinger.disguise.DisguiseAPI;
 import net.pinger.disguise.Skin;
+import net.pinger.skinsetter.listener.PlayerListener;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class SkinSetter extends JavaPlugin {
@@ -32,12 +34,15 @@ public class SkinSetter extends JavaPlugin {
         DisguiseAPI.getSkinManager().getFromImage(skinUrl, response -> {
             // Check if the response was successful
             if (!response.success()) {
-                skin = DisguiseAPI.getSkinManager().getFromMojang("Tylarzz");
+                this.skin = DisguiseAPI.getSkinManager().getFromMojang("Tylarzz");
                 return;
             }
 
-            skin = response.get();
+            this.skin = response.get();
         });
+
+        // Register the player listener
+        Bukkit.getPluginManager().registerEvents(new PlayerListener(this), this);
     }
 
     public Skin getSkin() {
